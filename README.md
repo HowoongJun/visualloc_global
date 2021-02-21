@@ -1,2 +1,2 @@
-# visualloc_global
-Global localization for visual localization
+# Visual Localization - Global Feature
+Global feature for visual localization

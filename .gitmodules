@@ -1,0 +1,3 @@
+[submodule "globalfeature_ref"]
+	path = globalfeature_ref
+	url = https://github.com/HowoongJun/globalfeature_ref.git

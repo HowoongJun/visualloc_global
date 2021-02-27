@@ -1,8 +1,5 @@
 # Main class for visual localization global
 import imp
-from gcore.ImageTopic import CImageTopic
-from gcore.ImageTopic import ePixelFormat
-from gcore.ImageTopic import eEncoding
 import tensorflow.compat.v1 as tf
 
 class CVisualLocGlobal():
@@ -12,7 +9,7 @@ class CVisualLocGlobal():
         elif model == "netvlad":
             print("Model: NetVLAD")
             self.__module = imp.load_source(model, "./globalfeature_ref/netvlad/netvlad.py")
-        
+
     def __del__(self):
         print("GlobalFeature Destructor!")
 
@@ -23,18 +20,19 @@ class CVisualLocGlobal():
         self.__model.Close()
 
     def Read(self):
-        self.__model.Read()
+        return self.__model.Read()
 
     def Write(self):
         self.__model.Write()
 
-    def Control(self):
+    def Control(self, oImage):
         if(tf.config.experimental.list_physical_devices('GPU')):
             self.__gpuCheck = True
         else:
             self.__gpuCheck = False
-        self.__image = CImageTopic()
-        self.__model.Control(self.__gpuCheck, self.__image)
+
+        self.__image = oImage
+        self.__model.Control(oImage = self.__image, bGPUFlag = self.__gpuCheck)
 
     def Reset(self):
         self.__model.Reset()

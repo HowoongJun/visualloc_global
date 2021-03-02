@@ -9,6 +9,9 @@ class CVisualLocGlobal():
         elif model == "netvlad":
             print("Model: NetVLAD")
             self.__module = imp.load_source(model, "./globalfeature_ref/netvlad/netvlad.py")
+        elif model == "gem":
+            print("Model: GeM")
+            self.__module = imp.load_source(model, "./globalfeature_ref/gem/gem.py")
 
     def __del__(self):
         print("GlobalFeature Destructor!")

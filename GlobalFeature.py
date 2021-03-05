@@ -1,8 +1,8 @@
 # Main class for visual localization global
 import imp
-import tensorflow.compat.v1 as tf
+from gcore.hal import *
 
-class CVisualLocGlobal():
+class CVisualLocGlobal(CVisualLocalizationCore):
     def __init__(self, model):
         if model == "mymodule":
             self.__module = imp.load_source(model, "./gcore/mymodule.py")
@@ -25,17 +25,12 @@ class CVisualLocGlobal():
     def Read(self):
         return self.__model.Read()
 
-    def Write(self):
-        self.__model.Write()
+    def Write(self, strDescPath, strImgName):
+        self.__model.Write(strDescPath, strImgName)
 
-    def Control(self, oImage):
-        if(tf.config.experimental.list_physical_devices('GPU')):
-            self.__gpuCheck = True
-        else:
-            self.__gpuCheck = False
-
-        self.__image = oImage
-        self.__model.Control(oImage = self.__image, bGPUFlag = self.__gpuCheck)
+    def Setting(self, eCommand:int, Value = None):
+        self.__model.Setting(eCommand, Value)
 
     def Reset(self):
         self.__model.Reset()
+        self.__image = None

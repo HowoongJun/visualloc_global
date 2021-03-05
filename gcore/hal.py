@@ -1,5 +1,13 @@
 # Visual Localization core abstract class
 from abc import *
+from enum import IntEnum
+
+class eSettingCmd(IntEnum):
+    eSettingCmd_NONE = 1
+    eSettingCmd_IMAGE_DATA = 2
+    eSettingCmd_IMAGE_CHANNEL = 3
+
+    eSettingCmd_CONFIG = 4
 
 class CVisualLocalizationCore(metaclass=ABCMeta):
     @abstractmethod
@@ -27,7 +35,7 @@ class CVisualLocalizationCore(metaclass=ABCMeta):
         print("Visual Localization Core Read")
 
     @abstractmethod
-    def Control(self):
+    def Setting(self):
         print("Visual Localization Core Control")
 
     @abstractmethod

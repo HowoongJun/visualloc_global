@@ -5,6 +5,7 @@ import sys, os, cv2
 import argparse
 from glob import glob
 import tensorflow.compat.v1 as tf
+import common.Log as log
 
 parser = argparse.ArgumentParser(description='Test Global Feature')
 parser.add_argument('--model', '--m', type=str, default='mymodule', dest='model',
@@ -21,7 +22,7 @@ args = parser.parse_args()
 
 def readFolder(strImgFolder):
     if(not os.path.isdir(strImgFolder)):
-        print("Path does not exist!")
+        log.DebugPrint().warning("Path does not exist!")
         return False
     strPngList = [os.path.basename(x) for x in glob(strImgFolder + "*.png")]
     strJpgList = [os.path.basename(x) for x in glob(strImgFolder + "*.jpg")]
@@ -66,10 +67,10 @@ def imageRead(strImgPath):
 
 def checkGPU():
     if(tf.config.experimental.list_physical_devices('GPU')):
-        print("Using GPU..")
+        log.DebugPrint().info("Using GPU..")
         return True
     else:
-        print("Using CPU..")
+        log.DebugPrint().info("Using CPU..")
         return False
 
 if __name__ == "__main__":
@@ -80,10 +81,10 @@ if __name__ == "__main__":
     model.Setting(eSettingCmd.eSettingCmd_IMAGE_CHANNEL, args.channel)
     model.Setting(eSettingCmd.eSettingCmd_CONFIG, checkGPU)
     if(args.db is not None):
-        print("DB Creation Mode!")
+        log.DebugPrint().info("DB Creation Mode!")
         if(makeDB(model) is False):
-            print("DB Creation Error!")
+            log.DebugPrint().error("DB Creation Error!")
     else:
-        print("Query mode!")
+        log.DebugPrint().info("Query mode!")
         if(queryCheck(model) is False):
-            print("Query Mode Error!")
+            log.DebugPrint().error("Query Mode Error!")

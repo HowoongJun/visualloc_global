@@ -9,7 +9,7 @@ import common.Log as log
 
 parser = argparse.ArgumentParser(description='Test Global Feature')
 parser.add_argument('--model', '--m', type=str, default='mymodule', dest='model',
-                    help='Model select: mymodule, netvlad, gem')
+                    help='Model select: mymodule, netvlad, gem, cam')
 parser.add_argument('--db', '--d', default=None, dest='db',
                     help='DB creation mode: DB file save path')
 parser.add_argument('--path', '--p', type=str, dest='path',
@@ -36,9 +36,11 @@ def makeDB(oModel) -> bool:
         return False
     for fileIdx in strFileList:
         strImgPath = args.path + '/' + fileIdx
-        model.Setting(eSettingCmd.eSettingCmd_IMAGE_DATA, imageRead(strImgPath))
-        model.Write(args.db, fileIdx)
-        model.Reset()
+        oModel.Setting(eSettingCmd.eSettingCmd_IMAGE_DATA, imageRead(strImgPath))
+        if(oModel.Write(args.db, fileIdx) is False):
+            log.DebugPrint().error("Fail to write DB for image " + fileIdx)
+            return False
+        oModel.Reset()
     return True
 
 def queryCheck(oModel):
@@ -47,10 +49,10 @@ def queryCheck(oModel):
         return False
     for fileIdx in strFileList:
         strImgPath = args.path + '/' + fileIdx
-        model.Setting(eSettingCmd.eSettingCmd_IMAGE_DATA, imageRead(strImgPath))
-        result = model.Read()
+        oModel.Setting(eSettingCmd.eSettingCmd_IMAGE_DATA, imageRead(strImgPath))
+        result = oModel.Read()
         print(result)
-        model.Reset()
+        oModel.Reset()
     return True
 
 def imageRead(strImgPath):

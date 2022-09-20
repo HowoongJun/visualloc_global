@@ -7,6 +7,7 @@ from glob import glob
 import tensorflow.compat.v1 as tf
 import common.Log as log
 import numpy as np
+from eval.eval import *
 
 parser = argparse.ArgumentParser(description='Test Global Feature')
 parser.add_argument('--model', '--m', type=str, default='mymodule', dest='model',
@@ -56,7 +57,7 @@ def queryCheck(oModel):
         strImgPath = args.path + '/' + fileIdx
         oModel.Setting(eSettingCmd.eSettingCmd_IMAGE_DATA, imageRead(strImgPath))
         vResult = oModel.Read()
-        print(vResult)
+        # print(vResult)
         oModel.Reset()
     return True
 
@@ -123,4 +124,8 @@ if __name__ == "__main__":
         log.DebugPrint().info("Matching mode!")
         if(queryMatch(model) is False):
             log.DebugPrint().error("Matching Mode Error!")
-        
+    elif(args.mode == "streetview"):
+        log.DebugPrint().info("Streetview mode!")
+        oEval = CEval("147.46.111.251")
+        oEval.Open(model)
+        oEval.Run()
